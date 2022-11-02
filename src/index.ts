@@ -87,6 +87,7 @@ async function run() {
 
     await uploadData(inputs.path, inputs.bucketName);
     core.info('Data uploaded successfully');
+    core.info(`${YANDEX_CLOUD_ENDPOINT}/${inputs.bucketName}`);
 }
 
 run().catch(err => core.setFailed(err));

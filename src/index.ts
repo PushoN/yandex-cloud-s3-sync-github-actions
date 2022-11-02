@@ -29,9 +29,9 @@ const s3 = new S3({
     endpoint: YANDEX_CLOUD_ENDPOINT,
     credentials: {
         accessKeyId: inputs.accessKeyId,
-        secretAccessKey: inputs.secretAccessKey,
+        secretAccessKey: inputs.secretAccessKey
     },
-    region: YANDEX_CLOUD_REGION,
+    region: YANDEX_CLOUD_REGION
 });
 
 const emptyS3Bucket = async (bucket: string) => {
@@ -41,7 +41,7 @@ const emptyS3Bucket = async (bucket: string) => {
         return;
     }
 
-    const deleteKeys = listedObjects.Contents.map((c) => ({ Key: c.Key as string }));
+    const deleteKeys = listedObjects.Contents.map(c => ({ Key: c.Key as string }));
 
     await s3.deleteObjects({ Bucket: bucket, Delete: { Objects: deleteKeys } });
 
@@ -70,13 +70,12 @@ async function uploadData(s3Path: string, bucketName: string) {
     for await (const filePath of getFiles(s3Path)) {
         const ContentType = mime.lookup(filePath) || 'text/plain';
 
-        await s3
-            .putObject({
-                Key: path.relative(s3Path, filePath),
-                Bucket: bucketName,
-                Body: fs.createReadStream(filePath),
-                ContentType
-            });
+        await s3.putObject({
+            Key: path.relative(s3Path, filePath),
+            Bucket: bucketName,
+            Body: fs.createReadStream(filePath),
+            ContentType
+        });
     }
 }
 
